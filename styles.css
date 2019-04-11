@@ -15,7 +15,6 @@ table {
 table, th, td {
     padding: 10px;
     border: 1px solid black;
-    /* overflow-x: scroll; */
     transition: 0.15s cubic-bezier(.2,.64,.89,.61);
 }
 
@@ -27,6 +26,7 @@ td:focus, td:hover {
     position: relative;
     width: 100%;
     overflow-x: scroll;
+    -webkit-overflow-scrolling: touch;
 }
 
 .weekdays {
