@@ -5,11 +5,16 @@ body {
 }
 
 table {
-    display: inline-block;
     border-collapse: collapse;
     min-width: 95%;
     margin: 20px;
     table-layout: fixed;
+}
+
+@media(max-width: 500px) {
+    table {
+        display: inline-block;
+    }
 }
   
 table, th, td {

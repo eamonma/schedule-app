@@ -215,3 +215,8 @@ try {
 } catch(e) {
     console.log(e);
 }
+
+m.get(".clear").onclick = () => {
+    _.deleteCourses()
+    window.location.reload()
+}
