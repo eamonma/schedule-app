@@ -1,0 +1,58 @@
+body {
+    padding: 0;
+    margin: 0;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 20px;
+    table-layout: fixed;
+    hyphens: auto;
+}
+  
+table, th, td {
+    padding: 10px;
+    border: 1px solid black;
+    overflow-x: scroll;
+    transition: 0.15s cubic-bezier(.2,.64,.89,.61);
+}
+
+td:focus, td:hover {
+    background: rgb(241,196,15)
+}
+
+.week-one, .week-two {
+    position: relative;
+    width: 100%;
+    overflow-x: scroll;
+}
+
+.weekdays {
+    font-weight: 900;
+}
+
+.schedule {
+    width: 100%;
+    max-width: 1024px;
+    margin: auto;
+}
+
+h1 {
+    border-bottom: 1px solid black;
+    padding: 10px 0;
+    margin: 20px 20px 10px 20px;
+}
+
+section {
+    padding: 20px;
+    transition: 0.15s cubic-bezier(.2,.64,.89,.61);
+}
+
+section:hover, section:focus {
+    background: rgb(236,240,241)
+}
+
+td:focus {
+    outline: 4px solid rgb(41,128,185);
+}
