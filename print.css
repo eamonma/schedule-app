@@ -1,0 +1,62 @@
+body {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+table {
+    border-collapse: collapse;
+    min-width: 95%;
+    margin: 20px;
+    table-layout: fixed;
+}
+
+@media(max-width: 500px) {
+    table {
+        display: inline-block;
+    }
+}
+
+.week-one, .week-two {
+    position: relative;
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+}
+
+.weekdays {
+    font-weight: 900;
+}
+
+.schedule {
+    width: 100%;
+    max-width: 1024px;
+    margin: auto;
+}
+
+h1 {
+    border-bottom: 1px solid black;
+    padding: 10px 0;
+    margin: 20px 20px 10px 20px;
+}
+
+section {
+    padding: 20px;
+    transition: 0.15s cubic-bezier(.2,.64,.89,.61);
+}
+
+section:hover, section:focus {
+    background: #fff;
+}
+
+td:focus {
+    outline: none;
+}
+
+button {
+    display: none;
+}
+
+.weekdays * {
+    color: #000 !important;
+}
