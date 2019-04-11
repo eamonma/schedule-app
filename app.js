@@ -147,7 +147,7 @@ const schedule = {
 const _ = schedule.utility
 
 let myCourses = _.getCourses()
-if(!myCourses[0]) {
+if(!myCourses) {
     myCourses = []
     for(let i = 0; i < 8; i++) {
         myCourses.push(prompt(`What is your block ${i + 1}?`))
