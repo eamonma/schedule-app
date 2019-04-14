@@ -11,12 +11,6 @@ table {
     table-layout: fixed;
 }
 
-@media(max-width: 500px) {
-    table {
-        display: inline-block;
-    }
-}
-
 .week-one, .week-two {
     position: relative;
     width: 100%;
@@ -32,12 +26,6 @@ table {
     width: 100%;
     max-width: 1024px;
     margin: auto;
-}
-
-h1 {
-    border-bottom: 1px solid black;
-    padding: 10px 0;
-    margin: 20px 20px 10px 20px;
 }
 
 section {

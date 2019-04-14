@@ -142,17 +142,49 @@ const schedule = {
             weekTwo,
         }
     }
-};
-
+}
 const _ = schedule.utility
+
+const preFillValues = () => {
+    const courses = _.getCourses()
+    if(courses[0]) {
+        const form = m.get(".set-courses-form")
+        for(let i = 0; i < 8; i++) {
+            form[`block-${i + 1}`].value = courses[i]
+        }
+    }
+}
+
+const toggleSetCourses = (status) => {
+    const form = m.get(".set-courses")
+    preFillValues()
+    form.style.transform = status ? "translateY(100%)" : "translateY(-100%)"
+}
+
+const getCourses = () => {
+    const form = m.get(".set-courses-form")
+    let courses = []
+    let emptyCourses = []
+    for(let i = 0; i < 8; i++) {
+        const value = form[`block-${i + 1}`].value
+        const pushValue = value.charAt(0).toUpperCase() + value.substring(1, value.length)
+        courses.push(pushValue)
+        if(!form[`block-${i + 1}`].value) {
+            emptyCourses.push(i)
+        }
+    }
+
+    if(emptyCourses[0]) {
+        return alert("You left some blocks empty!")
+    }
+    _.setCourses(courses)
+    window.location.reload()
+}
 
 let myCourses = _.getCourses()
 if(!myCourses) {
     myCourses = []
-    for(let i = 0; i < 8; i++) {
-        myCourses.push(prompt(`What is your block ${i + 1}?`))
-    }
-    _.setCourses(myCourses)
+    toggleSetCourses(1)
 }
 
 const mySchedule = schedule.generate(myCourses)
@@ -162,6 +194,7 @@ let tables = []
 
 let mutatedSchedule = []
 
+// sorting
 for(let j = 0; j < 2; j++) {
     let week = (j === 0) ? mySchedule.weekOne : mySchedule.weekTwo;
     let table = (j === 0) ? tableOne : tableTwo;
@@ -196,27 +229,54 @@ for(let j = 0; j < 2; j++) {
 
 m.get(".week-one").appendChild(tables[0])
 m.get(".week-two").appendChild(tables[1])
+const td = m.getS("td")
+
+for(element of td) {
+    element.setAttribute("tabindex", 0)
+}
 
 const day = new Date().getDay()
 const week = _.weekNo(_.daysSince(_.gmtToLocal(Date.now())))
 
-try {
-    const weekElement = m.get(week === 1 ? (".week-one") : (".week-two"))
-    const dayElement = weekElement.getElementsByClassName(`${weekdays[day - 1]}`)[0];
+const weekElement = m.get(week === 1 ? (".week-one") : (".week-two"))
+weekElement.focus()
 
-    dayElement.style.background = "rgb(192,57,43)"
-    dayElement.style.color = "#fff"
 
-    const td = m.getS("td")
-
-    for(element of td) {
-        element.setAttribute("tabindex", 0)
-    }
-} catch(e) {
-    console.log(e);
+if(week === 2) {
+    weekElement.style.transform = "translateY(-100%)"
+    m.get(".week-one").style.transform = "translateY(100%)"
 }
 
-m.get(".clear").onclick = () => {
-    _.deleteCourses()
-    window.location.reload()
+try {
+    const dayElement = weekElement.getElementsByClassName(`${weekdays[day - 1]}`)[0];
+    dayElement.style.background = "rgb(192,57,43)"
+    dayElement.style.color = "#fff"
+} catch(e) {
+    console.log(e)
+}
+
+m.get(".clear-all").onclick = () => {
+    if(confirm("Are you sure?")) {
+        _.deleteCourses()
+        window.location.reload()
+    }
+}
+
+m.get(".set").onclick = () => {
+    toggleSetCourses(1);
+}
+
+m.get(".set-courses-form").onsubmit = (e) => {
+    e.preventDefault()
+    // toggleSetCourses()
+    getCourses()
+}
+
+m.get("#cancel").onclick = (e) => {
+    e.preventDefault()
+    if(!_.getCourses()) {
+        alert("You must set courses!")
+    } else {
+        toggleSetCourses()
+    }
 }
