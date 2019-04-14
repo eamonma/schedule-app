@@ -147,11 +147,16 @@ const _ = schedule.utility
 
 const preFillValues = () => {
     const courses = _.getCourses()
-    if(courses[0]) {
-        const form = m.get(".set-courses-form")
-        for(let i = 0; i < 8; i++) {
-            form[`block-${i + 1}`].value = courses[i]
+    try {
+        if(courses[0]) {
+            const form = m.get(".set-courses-form")
+            for(let i = 0; i < 8; i++) {
+                form[`block-${i + 1}`].value = courses[i]
+            }
         }
+    } catch(e) {
+        console.log(e);
+        
     }
 }
 
@@ -170,7 +175,7 @@ const getCourses = () => {
         const pushValue = value.charAt(0).toUpperCase() + value.substring(1, value.length)
         courses.push(pushValue)
         if(!form[`block-${i + 1}`].value) {
-            emptyCourses.push(i)
+            emptyCourses.push(i + 1)
         }
     }
 
@@ -185,90 +190,88 @@ let myCourses = _.getCourses()
 if(!myCourses) {
     myCourses = []
     toggleSetCourses(1)
-}
+} else {
+    const mySchedule = schedule.generate(myCourses)
+    let tableOne = document.createElement("table")
+    let tableTwo = document.createElement("table")
+    let tables = []
 
-const mySchedule = schedule.generate(myCourses)
-let tableOne = document.createElement("table")
-let tableTwo = document.createElement("table")
-let tables = []
+    let mutatedSchedule = []
 
-let mutatedSchedule = []
+    // sorting
+    for(let j = 0; j < 2; j++) {
+        let week = (j === 0) ? mySchedule.weekOne : mySchedule.weekTwo;
+        let table = (j === 0) ? tableOne : tableTwo;
 
-// sorting
-for(let j = 0; j < 2; j++) {
-    let week = (j === 0) ? mySchedule.weekOne : mySchedule.weekTwo;
-    let table = (j === 0) ? tableOne : tableTwo;
+        for(let i = 0; i < 4; i++) {
+            let tempArr = []
+            week.forEach((day) => {
+                tempArr.push(day[i])
+            })
+            mutatedSchedule.push(tempArr)
+        }
 
-    for(let i = 0; i < 4; i++) {
-        let tempArr = []
-        week.forEach((day) => {
-            tempArr.push(day[i])
-        })
-        mutatedSchedule.push(tempArr)
+        for(let i = 0; i < mutatedSchedule.length; i++) { // the row
+            let row = table.insertRow(i)
+            for(let j = 0; j < mutatedSchedule[i].length; j++) {
+                let cell = row.insertCell(j)
+                cell.innerHTML = mutatedSchedule[i][j]
+            }
+        }
+
+        let row = table.insertRow(0)
+        row.classList.add("weekdays")
+        for(let i = 0; i < weekdays.length; i++) {
+            let cell = row.insertCell(i)
+            cell.classList.add(weekdays[i].toLowerCase())
+            cell.innerHTML = weekdays[i]
+        }
+        tables.push(table)
+
+        mutatedSchedule = []
     }
 
-    for(let i = 0; i < mutatedSchedule.length; i++) { // the row
-        let row = table.insertRow(i)
-        for(let j = 0; j < mutatedSchedule[i].length; j++) {
-            let cell = row.insertCell(j)
-            cell.innerHTML = mutatedSchedule[i][j]
+    m.get(".week-one").appendChild(tables[0])
+    m.get(".week-two").appendChild(tables[1])
+    const td = m.getS("td")
+
+    for(element of td) {
+        element.setAttribute("tabindex", 0)
+    }
+
+    const day = new Date().getDay()
+    const week = _.weekNo(_.daysSince(_.gmtToLocal(Date.now())))
+
+    const weekElement = m.get(week === 1 ? (".week-one") : (".week-two"))
+    weekElement.focus()
+
+    if(week === 2) {
+        weekElement.style.transform = "translateY(-100%)"
+        m.get(".week-one").style.transform = "translateY(100%)"
+    }
+
+    try {
+        const dayElement = weekElement.getElementsByClassName(`${weekdays[day - 1]}`)[0];
+        dayElement.style.background = "rgb(192,57,43)"
+        dayElement.style.color = "#fff"
+    } catch(e) {
+        console.log(e)
+    }
+
+    m.get(".clear-all").onclick = () => {
+        if(confirm("Are you sure?")) {
+            _.deleteCourses()
+            window.location.reload()
         }
     }
 
-    let row = table.insertRow(0)
-    row.classList.add("weekdays")
-    for(let i = 0; i < weekdays.length; i++) {
-        let cell = row.insertCell(i)
-        cell.classList.add(weekdays[i].toLowerCase())
-        cell.innerHTML = weekdays[i]
+    m.get(".set").onclick = () => {
+        toggleSetCourses(1);
     }
-    tables.push(table)
-
-    mutatedSchedule = []
-}
-
-m.get(".week-one").appendChild(tables[0])
-m.get(".week-two").appendChild(tables[1])
-const td = m.getS("td")
-
-for(element of td) {
-    element.setAttribute("tabindex", 0)
-}
-
-const day = new Date().getDay()
-const week = _.weekNo(_.daysSince(_.gmtToLocal(Date.now())))
-
-const weekElement = m.get(week === 1 ? (".week-one") : (".week-two"))
-weekElement.focus()
-
-
-if(week === 2) {
-    weekElement.style.transform = "translateY(-100%)"
-    m.get(".week-one").style.transform = "translateY(100%)"
-}
-
-try {
-    const dayElement = weekElement.getElementsByClassName(`${weekdays[day - 1]}`)[0];
-    dayElement.style.background = "rgb(192,57,43)"
-    dayElement.style.color = "#fff"
-} catch(e) {
-    console.log(e)
-}
-
-m.get(".clear-all").onclick = () => {
-    if(confirm("Are you sure?")) {
-        _.deleteCourses()
-        window.location.reload()
-    }
-}
-
-m.get(".set").onclick = () => {
-    toggleSetCourses(1);
 }
 
 m.get(".set-courses-form").onsubmit = (e) => {
     e.preventDefault()
-    // toggleSetCourses()
     getCourses()
 }
 
