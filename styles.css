@@ -96,6 +96,7 @@ button {
     transition: 0.3s cubic-bezier(.2,.64,.89,.61);
     text-align: center;
     overflow: scroll;
+    -webkit-overflow-scrolling: touch;
 }
 
 .set-courses label {
