@@ -92,8 +92,10 @@ button {
     height: 100%;
     position: fixed;
     background: #fff;
-    padding: 20px 0 0 40px;
+    padding: 10px;
     transition: 0.3s cubic-bezier(.2,.64,.89,.61);
+    text-align: center;
+    overflow: scroll;
 }
 
 .set-courses label {
@@ -102,6 +104,11 @@ button {
 
 .set-courses label::after {
     content: ":"
+}
+
+.set-courses p {
+    margin: inherit auto;
+    text-align: center;
 }
 
 .last-block {
