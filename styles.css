@@ -41,6 +41,7 @@ td:focus {
 
 .weekdays {
     font-weight: 900;
+    border-bottom: 2px solid black;
 }
 
 .schedule, .options {
@@ -83,7 +84,7 @@ button {
 
 .set-courses {
     opacity: 1;
-    top: -100%;
+    top: -200%;
     right: 0;
     bottom: 0;
     left: 0;
@@ -91,7 +92,7 @@ button {
     height: 100%;
     position: fixed;
     background: #fff;
-    padding: 20px;
+    padding: 20px 0 0 40px;
     transition: 0.3s cubic-bezier(.2,.64,.89,.61);
 }
 
@@ -101,4 +102,8 @@ button {
 
 .set-courses label::after {
     content: ":"
+}
+
+.last-block {
+    border-top: 2px dotted grey;
 }

@@ -163,7 +163,7 @@ const preFillValues = () => {
 const toggleSetCourses = (status) => {
     const form = m.get(".set-courses")
     preFillValues()
-    form.style.transform = status ? "translateY(100%)" : "translateY(-100%)"
+    form.style.top = status ? "0" : "-200%"
 }
 
 const getCourses = () => {
@@ -213,6 +213,9 @@ if(!myCourses) {
 
         for(let i = 0; i < mutatedSchedule.length; i++) { // the row
             let row = table.insertRow(i)
+            if(i === 3) {
+                row.classList.add("last-block")
+            }
             for(let j = 0; j < mutatedSchedule[i].length; j++) {
                 let cell = row.insertCell(j)
                 cell.innerHTML = mutatedSchedule[i][j]
@@ -255,7 +258,6 @@ if(!myCourses) {
         dayElement.style.background = "rgb(192,57,43)"
         dayElement.style.color = "#fff"
     } catch(e) {
-        console.log(e)
     }
 
     m.get(".clear-all").onclick = () => {
