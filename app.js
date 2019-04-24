@@ -268,6 +268,35 @@ if(!myCourses) {
     m.get(".set").onclick = () => {
         toggleSetCourses(1);
     }
+
+    const beforePrint = () => {
+        if(week === 2) {
+            weekElement.style.transform = "none"
+            m.get(".week-one").style.transform = "none"
+        }
+    }
+
+    const afterPrint = () => {
+        if(week === 2) {
+            weekElement.style.transform = "translateY(-100%)"
+            m.get(".week-one").style.transform = "translateY(100%)"
+        }
+    }
+
+    if (window.matchMedia) {
+        var mediaQueryList = window.matchMedia('print');
+        mediaQueryList.addListener(function(mql) {
+            if (mql.matches) {
+                beforePrint();
+            } else {
+                afterPrint();
+            }
+        });
+    }
+
+    window.onbeforeprint = beforePrint;
+    window.onafterprint = afterPrint;
+
 }
 
 m.get(".set-courses-form").onsubmit = (e) => {
